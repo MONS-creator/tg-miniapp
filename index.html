@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -49,7 +48,7 @@ function pay() {
   var chatId = user.id || 2090100256;
   var uname = user.username ? '@' + user.username : chatId;
   var text = 'Order: ' + item.name + ' (' + item.price + ' UAH) from ' + uname;
-  var url = 'https://api.' + 'telegram.org/bot9102265816:AAEBnbomCjJZHo7ScutRrN-Ik72POZRorx4/sendMessage?chat_id=' + chatId + '&text=' + encodeURIComponent(text);
+  var url = 'https://api.' + 'telegram.org/bot9102265816:AAEBnbomCjJZHo7ScutRrN-Ik72POZRorx4' + '/sendMessage?chat_id=' + chatId + '&text=' + encodeURIComponent(text);
   var img = new Image();
   img.src = url;
   btn.innerText = '🎉 Отправлено!';
