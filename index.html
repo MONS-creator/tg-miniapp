@@ -25,11 +25,14 @@ tg.ready();
 tg.expand();
 
 const services = [
-  {id:1, icon:"🤖", name:"Бот-запись", price:500},
-  {id:2, icon:"📊", name:"Бот + Таблицы", price:700},
-  {id:3, icon:"🛒", name:"Бот-магазин", price:900},
-  {id:4, icon:"📱", name:"Mini App", price:1200},
+  {icon:"🤖", name:"Бот-визитка", price:500},
+  {icon:"📨", name:"Бот-предложка", price:600},
+  {icon:"📈", name:"Парсер / автопостинг", price:700},
+  {icon:"📝", name:"Бот-заявки + админка", price:800},
+  {icon:"📱", name:"Mini App", price:1200},
+  {icon:"🛒", name:"Бот-магазин", price:1500},
 ];
+
 let selected = null;
 
 const grid = document.getElementById("grid");
@@ -37,7 +40,7 @@ services.forEach(s => {
   const el = document.createElement("div");
   el.className = "card";
   el.innerHTML = `<div style="font-size:48px">${s.icon}</div>
-    <div>${s.name}</div><div class="price">${s.price} грн</div>
+    <div>${s.name}</div><div class="price">от ${s.price} грн</div>
     <button>Выбрать</button>`;
   el.querySelector("button").onclick = () => {
     selected = s;
