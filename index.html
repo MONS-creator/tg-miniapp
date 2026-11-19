@@ -49,15 +49,16 @@ function pay() {
   var chatId = user.id || 2090100256;
   var uname = user.username ? '@' + user.username : chatId;
   var token = '9102265816:AAGG0pEQgUTMdxpJIg81suYKRV7Fk1WWm9I';
-  var text = '✅ Заказ из Mini App принят!\n\n📦 Услуга: ' + item.name + '\n💰 Сумма: ' + item.price + ' грн\n👤 Клиент: ' + uname;
+  var text = '✅ Заказ из Mini App принят!\n\n📦 Услуга: ' + item.name + '\n💰 Сумма: ' + item.price + ' грн\n👤 Клиент: ' + unam;
+  var url = 'https://api.' + 'telegram.org/bot' + token + '/sendMessage?chat_id=' + chatId + '&text=' + encodeURIComponent(text);
 
-  fetch('https://telegram.org' + token + '/sendMessage', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ chat_id: chatId, text: text })
-  }).then(function() {
-    btn.innerText = '🎉 Заказ отправлен!';
-    setTimeout(function(){ tg.close(); }, 600);
+  fetch(url).then(function(r) {
+    if (r.ok) {
+      btn.innerText = '🎉 Заказ отправлен!';
+      setTimeout(function(){ tg.close(); }, 600);
+    } else {
+      btn.innerText = '❌ Код ошибки: ' + r.status;
+    }
   }).catch(function(err) {
     btn.innerText = '❌ Ошибка: ' + err;
   });
