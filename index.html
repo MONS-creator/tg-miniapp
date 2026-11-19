@@ -1,3 +1,6 @@
+
+TOKEN="9102265816:AAGG0pEQgUTMdxpJIg81suYKRV7Fk1WWm9I"
+cat << EOF > ~/storage/downloads/index.html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -32,7 +35,6 @@ var tg = window.Telegram.WebApp;
 tg.ready();
 tg.expand();
 var item = null;
-
 function pick(id, name, price) {
   item = { name: name, price: price };
   ['c1','c2','c3','c4'].forEach(function(x){ document.getElementById(x).style.borderColor = 'transparent'; });
@@ -40,7 +42,6 @@ function pick(id, name, price) {
   document.getElementById('order-btn').innerText = '✅ Оформить: ' + name + ' (' + price + ' грн)';
   document.getElementById('bar').style.display = 'block';
 }
-
 function pay() {
   if (!item) return;
   var btn = document.getElementById('order-btn');
@@ -48,10 +49,8 @@ function pay() {
   var user = (tg.initDataUnsafe && tg.initDataUnsafe.user) ? tg.initDataUnsafe.user : {};
   var chatId = user.id || 2090100256;
   var uname = user.username ? '@' + user.username : chatId;
-  var token = '9102265816:AAGG0pEQgUTMdxpJIg81suYKRV7Fk1WWm9I';
   var text = 'Order: ' + item.name + ' (' + item.price + ' UAH) from ' + uname;
-  var url = 'https://api.' + 'telegram.org/bot' + token + '/sendMessage?chat_id=' + chatId + '&text=' + encodeURIComponent(text);
-
+  var url = 'https://api.' + 'telegram.org/bot${TOKEN}/sendMessage?chat_id=' + chatId + '&text=' + encodeURIComponent(text);
   var img = new Image();
   img.src = url;
   btn.innerText = '🎉 Отправлено!';
@@ -60,3 +59,4 @@ function pay() {
 </script>
 </body>
 </html>
+EOF
