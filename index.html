@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini App Магазин</title>
+    <script src="https://telegram.org"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--tg-theme-bg-color, #1c1c1e);
+            color: var(--tg-theme-text-color, #ffffff);
+            margin: 0;
+            padding: 16px;
+        }
+        h2 { margin-top: 0; text-align: center; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .card {
+            background: var(--tg-theme-secondary-bg-color, #2c2c2e);
+            border-radius: 14px;
+            padding: 12px;
+            text-align: center;
+        }
+        .emoji { font-size: 40px; margin-bottom: 8px; }
+        .title { font-weight: bold; font-size: 15px; margin-bottom: 4px; }
+        .price { color: #34c759; font-weight: bold; margin-bottom: 10px; }
+        button {
+            background: var(--tg-theme-button-color, #007aff);
+            color: var(--tg-theme-button-text-color, #ffffff);
+            border: none;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-weight: bold;
+            width: 100%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h2>🛍 Каталог услуг / товаров</h2>
+    <div class="grid">
+        <div class="card">
+            <div class="emoji">🔮</div>
+            <div class="title">Экспресс-расклад</div>
+            <div class="price">250 грн</div>
+            <button onclick="selectItem('Экспресс-расклад', 250)">Выбрать</button>
+        </div>
+        <div class="card">
+            <div class="emoji">✨</div>
+            <div class="title">Полный разбор</div>
+            <div class="price">500 грн</div>
+            <button onclick="selectItem('Полный разбор', 500)">Выбрать</button>
+        </div>
+        <div class="card">
+            <div class="emoji">🤖</div>
+            <div class="title">Бот под ключ</div>
+            <div class="price">800 грн</div>
+            <button onclick="selectItem('Бот под ключ', 800)">Выбрать</button>
+        </div>
+        <div class="card">
+            <div class="emoji">📱</div>
+            <div class="title">Mini App</div>
+            <div class="price">1200 грн</div>
+            <button onclick="selectItem('Mini App', 1200)">Выбрать</button>
+        </div>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand(); // Раскрываем окно на весь экран
+
+        let selected = null;
+
+        function selectItem(name, price) {
+            selected = { name: name, price: price };
+            tg.MainButton.setText(`Оформить: ${name} (${price} грн)`);
+            tg.MainButton.show();
+        }
+
+        tg.MainButton.onClick(() => {
+            if (selected) {
+                tg.sendData(JSON.stringify(selected)); // Отправляем данные в Python-бота
+            }
+        });
+    </script>
+</body>
+</html>
+
