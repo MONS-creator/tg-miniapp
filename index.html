@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mini App Магазин</title>
+    <title>Услуги разработки</title>
     <script src="https://telegram.org"></script>
     <style>
         body {
@@ -11,7 +11,7 @@
             background-color: var(--tg-theme-bg-color, #1c1c1e);
             color: var(--tg-theme-text-color, #ffffff);
             margin: 0;
-            padding: 16px;
+            padding: 16px 16px 90px 16px;
         }
         h2 { margin-top: 0; text-align: center; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -20,7 +20,9 @@
             border-radius: 14px;
             padding: 12px;
             text-align: center;
+            border: 2px solid transparent;
         }
+        .card.active { border-color: #34c759; }
         .emoji { font-size: 40px; margin-bottom: 8px; }
         .title { font-weight: bold; font-size: 15px; margin-bottom: 4px; }
         .price { color: #34c759; font-weight: bold; margin-bottom: 10px; }
@@ -34,54 +36,74 @@
             width: 100%;
             cursor: pointer;
         }
+        #checkout-bar {
+            display: none;
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: #2c2c2e;
+            padding: 12px 16px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.4);
+        }
+        #checkout-btn {
+            background: #34c759;
+            font-size: 16px;
+            padding: 12px;
+        }
     </style>
 </head>
 <body>
-    <h2>🛍 Каталог услуг / товаров</h2>
+    <h2>💻 Услуги разработки</h2>
     <div class="grid">
-        <div class="card">
-            <div class="emoji">🔮</div>
-            <div class="title">Экспресс-расклад</div>
-            <div class="price">250 грн</div>
-            <button onclick="selectItem('Экспресс-расклад', 250)">Выбрать</button>
-        </div>
-        <div class="card">
-            <div class="emoji">✨</div>
-            <div class="title">Полный разбор</div>
-            <div class="price">500 грн</div>
-            <button onclick="selectItem('Полный разбор', 500)">Выбрать</button>
-        </div>
-        <div class="card">
+        <div class="card" id="c1">
             <div class="emoji">🤖</div>
-            <div class="title">Бот под ключ</div>
-            <div class="price">800 грн</div>
-            <button onclick="selectItem('Бот под ключ', 800)">Выбрать</button>
+            <div class="title">Бот-визитка / Запись</div>
+            <div class="price">500 грн</div>
+            <button onclick="selectItem('c1', 'Бот-визитка / Запись', 500)">Выбрать</button>
         </div>
-        <div class="card">
+        <div class="card" id="c2">
+            <div class="emoji">📊</div>
+            <div class="title">Бот + Google Таблица</div>
+            <div class="price">700 грн</div>
+            <button onclick="selectItem('c2', 'Бот + Google Таблица', 700)">Выбрать</button>
+        </div>
+        <div class="card" id="c3">
+            <div class="emoji">🛒</div>
+            <div class="title">Бот-магазин с оплатой</div>
+            <div class="price">900 грн</div>
+            <button onclick="selectItem('c3', 'Бот-магазин с оплатой', 900)">Выбрать</button>
+        </div>
+        <div class="card" id="c4">
             <div class="emoji">📱</div>
-            <div class="title">Mini App</div>
+            <div class="title">Telegram Mini App</div>
             <div class="price">1200 грн</div>
-            <button onclick="selectItem('Mini App', 1200)">Выбрать</button>
+            <button onclick="selectItem('c4', 'Telegram Mini App', 1200)">Выбрать</button>
         </div>
+    </div>
+
+    <div id="checkout-bar">
+        <button id="checkout-btn" onclick="sendOrder()">✅ Оформить заказ</button>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
-        tg.expand(); // Раскрываем окно на весь экран
+        tg.ready();
+        tg.expand();
 
         let selected = null;
 
-        function selectItem(name, price) {
+        function selectItem(cardId, name, price) {
             selected = { name: name, price: price };
-            tg.MainButton.setText(`Оформить: ${name} (${price} грн)`);
-            tg.MainButton.show();
+            document.querySelectorAll('.card').forEach(el => el.classList.remove('active'));
+            document.getElementById(cardId).classList.add('active');
+            document.getElementById('checkout-btn').innerText = `✅ Оформить: ${name} (${price} грн)`;
+            document.getElementById('checkout-bar').style.display = 'block';
         }
 
-        tg.MainButton.onClick(() => {
+        function sendOrder() {
             if (selected) {
-                tg.sendData(JSON.stringify(selected)); // Отправляем данные в Python-бота
+                tg.sendData(JSON.stringify(selected));
             }
-        });
+        }
     </script>
 </body>
 </html>
