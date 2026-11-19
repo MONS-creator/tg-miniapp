@@ -44,25 +44,18 @@ function pick(id, name, price) {
 function pay() {
   if (!item) return;
   var btn = document.getElementById('order-btn');
-  btn.innerText = '⏳ Отправка заказа...';
+  btn.innerText = '⏳ Отправка...';
   var user = (tg.initDataUnsafe && tg.initDataUnsafe.user) ? tg.initDataUnsafe.user : {};
   var chatId = user.id || 2090100256;
   var uname = user.username ? '@' + user.username : chatId;
   var token = '9102265816:AAGG0pEQgUTMdxpJIg81suYKRV7Fk1WWm9I';
-  var text = 'New order: ' + item.name + ' (' + item.price + ' UAH) from ' + uname;
-  
+  var text = 'Order: ' + item.name + ' (' + item.price + ' UAH) from ' + uname;
   var url = 'https://api.' + 'telegram.org/bot' + token + '/sendMessage?chat_id=' + chatId + '&text=' + encodeURIComponent(text);
 
-  fetch(url).then(function(r) {
-    if (r.ok) {
-      btn.innerText = '🎉 Заказ отправлен!';
-      setTimeout(function(){ tg.close(); }, 600);
-    } else {
-      btn.innerText = '❌ Код ошибки: ' + r.status;
-    }
-  }).catch(function(err) {
-    btn.innerText = '❌ Ошибка: ' + err;
-  });
+  var img = new Image();
+  img.src = url;
+  btn.innerText = '🎉 Отправлено!';
+  setTimeout(function(){ tg.close(); }, 700);
 }
 </script>
 </body>
